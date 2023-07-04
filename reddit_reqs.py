@@ -4,7 +4,6 @@ import requests
 import time
 from datetime import datetime
 import json
-from os.path import exists
 import os
 
 #Dict that will serve to load in initial reddit data from file and also later write out results
@@ -28,7 +27,6 @@ def createRedditJsonRequestUrl(rawRedditUrl) :
     
     # Parse url from raw line
     urlParts = urlparse(rawRedditUrl)
-    #print(urlParts)
 
     #If not reddit link, we exit early
     if(not(urlParts.netloc == "www.reddit.com")) :
@@ -70,6 +68,7 @@ def insertIntoRedditJson(responseData, rawUrlLine) :
 def updateRedditResponseJsonFile(filename) :
     global resultRedditJsonData
     global statuses
+    # Open file and dump dict into resulting json file
     with open(filename, 'w') as fp:
         json.dump(resultRedditJsonData, fp)
     print(statuses)
@@ -102,4 +101,3 @@ def printKeys(filename) :
     
     for key in resultRedditJsonData:
         print(key)
-
