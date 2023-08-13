@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import os
 import random
+import time
 
 #Dict that will serve to load in initial reddit data from file and also later write out results
 resultRedditJsonData = {}
@@ -49,6 +50,7 @@ def getRedditJsonRequestData(rawRedditUrl, redditJsonRequestUrl) :
     if(rawRedditUrl.strip() in resultRedditJsonData.keys()) :
         return None
     try:
+        time.sleep(.1)
         response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
         if(response.status_code == 200) :
             print(rawRedditUrl.strip())
@@ -76,6 +78,8 @@ def updateRedditResponseJsonFile(filename) :
 def createRedditDataJson(sourceRedditTextFile, jsonResultFileName) :
     global resultRedditJsonData
     global statuses
+    # clear out before so that statuses is not added between method calls
+    statuses = {}
     
     loadRedditDataJson(jsonResultFileName)
     keysBefore = str(len(resultRedditJsonData.keys()))
@@ -126,18 +130,22 @@ def grabCharsAt(fileName, lineNumber, charNumber, charRange):
 
                 return line[minChar:maxChar+1]
             
-def grabRandomEntry(redditResultsJson) :
+def grabRandomEntry(redditResultsJson, writeToFile) :
     global resultRedditJsonData
     with open(redditResultsJson) as f:
         resultRedditJsonData = json.load(f)
         keys = list(resultRedditJsonData.keys())
         randKey = keys[random.randrange(0,len(keys)-1)]
-        sanitizeRedditEntry(randKey)
+        #sanitizeRedditEntry(randKey)
+        if(writeToFile):
+            with open("random" + datetime.now().strftime('%Y%m%d%H%M%S') + ".json", 'w') as fp:
+                jsontowrite = {randKey:resultRedditJsonData[randKey]}
+                json.dump(jsontowrite, fp)
         return resultRedditJsonData[randKey]
 
 
 def parseRedditEntries(redditResultsJson, keyForVal) :
-    global resultRedditJsonData
+    #global resultRedditJsonData
     print("parsing for key: " + keyForVal)
     with open(redditResultsJson) as f:
         resultRedditJsonData = json.load(f)
@@ -209,7 +217,7 @@ def sanitizeRedditEntry(redditEntryKey):
     # we know this will be a list so we can parse that and process each object
     for i in range(0, len(resultRedditJsonData[redditEntryKey])) :
 
-        keysToDeleteUpperLayer = ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
+        keysToDeleteUpperLayer = [] #["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
         for deleteKey in resultRedditJsonData[redditEntryKey][i].keys() :
             #print(deleteKey)
             if (checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i][deleteKey])) :
@@ -221,7 +229,7 @@ def sanitizeRedditEntry(redditEntryKey):
             
         # process inner data object
         if("data" in resultRedditJsonData[redditEntryKey][i].keys()) :
-            keysToDeleteDataLayer = ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags"]
+            keysToDeleteDataLayer = [] # ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags"]
             for deleteDataKey in resultRedditJsonData[redditEntryKey][i]["data"].keys() :
                 if (checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"][deleteDataKey])) :
                     keysToDeleteDataLayer.append(deleteDataKey)
@@ -233,8 +241,8 @@ def sanitizeRedditEntry(redditEntryKey):
             if "children" in resultRedditJsonData[redditEntryKey][i]["data"].keys() :
                 
                 for childrenIndex in range(0,len(resultRedditJsonData[redditEntryKey][i]["data"]["children"])):
-                   keysToDeleteChildLayer = ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
-                   for deleteChildrenKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex] :
+                   keysToDeleteChildLayer = [] # ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
+                   for deleteChildrenKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex].keys() :
                         if (checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex][deleteChildrenKey])) :
                            keysToDeleteChildLayer.append(deleteChildrenKey)
                         
@@ -244,7 +252,7 @@ def sanitizeRedditEntry(redditEntryKey):
 
                         
                         if "data" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex].keys() :
-                            keysToDeleteChildDataLayer = ["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
+                            keysToDeleteChildDataLayer = [] #["modhash","can_gild","is_meta","visited","pinned","quarantine","can_mod_post","contest_mode","hidden","stickied","locked","saved","gilded","archived","whitelist_status","parent_whitelist_status","is_robot_indexable","clicked","total_awards_received","is_created_from_ads_ui","distinguished","is_crosspostable","author_is_blocked","allow_live_comments","spoiler","hide_score","top_awarded_type","author_premium","send_replies","is_reddit_media_domain","link_flair_background_color","all_awardings","author_flair_type","author_flair_background_color","author_flair_template_id","author_flair_text_color","subreddit_subscribers","author_patreon_flair","gildings","link_flair_text_color","score","edited","created_utc","wls","pwls","upvote_ratio","downs","suggested_sort","treatment_tags","content_categories"]
                             for deleteChildDataKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys() :
                                if((checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"][deleteChildDataKey]))) :
                                    keysToDeleteChildDataLayer.append(deleteChildDataKey)
@@ -252,14 +260,49 @@ def sanitizeRedditEntry(redditEntryKey):
                             for keyToDeleteChildDataLayer in keysToDeleteChildDataLayer :
                                 if keyToDeleteChildDataLayer in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys():
                                     del resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"][keyToDeleteChildDataLayer]
-                               
-                       
+                            
+                            if "replies" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys() :
+                                #for replyIndex in range(0, len(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"])) :
 
-    
-    
+                                keysToDeleteChildDataRepliesLayer = []
 
-    
-        
+                                for deleteChildDataRepliesKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"].keys() :
+                                    if((checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"][deleteChildDataRepliesKey]))) :
+                                        keysToDeleteChildDataRepliesLayer.append(deleteChildDataRepliesKey)
+                                for keyToDeleteChildDataRepliesLayer in keysToDeleteChildDataRepliesLayer :
+                                    del resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"][keyToDeleteChildDataRepliesLayer]
+
+                                if "data" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"].keys() :
+                                    keysToDeleteChildDataRepliesDataLayer = []
+
+                                    for deleteChildDataRepliesDataKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"].keys() :
+                                        if((checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"][deleteChildDataRepliesDataKey]))) :
+                                            keysToDeleteChildDataRepliesDataLayer.append(deleteChildDataRepliesDataKey)
+                                    
+                                    for keyToDeleteChildDataRepliesDataLayer in keysToDeleteChildDataRepliesDataLayer :
+                                        del resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"][keyToDeleteChildDataRepliesDataLayer]
+
+                                    if "children" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]:
+                                        #print(len(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"]))
+
+                                        for replyChildrenIndex in range(0,len(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"])):
+                                            keysToDeleteChildDataRepliesDataChildLayer = []
+                                            for deleteToDeleteChildDataRepliesDataChildLayerKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex].keys() :
+                                                if(checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex][deleteToDeleteChildDataRepliesDataChildLayerKey])):
+                                                    keysToDeleteChildDataRepliesDataChildLayer.append(deleteToDeleteChildDataRepliesDataChildLayerKey)
+                                            
+                                            for keyToDeleteChildDataRepliesDataChildLayer in keysToDeleteChildDataRepliesDataChildLayer:
+                                                del resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex][keyToDeleteChildDataRepliesDataChildLayer]
+
+                                            if "data" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex].keys():
+                                                keysToDeleteChildDataRepliesDataChildDataLayer = []
+                                                for deleteToDeleteChildDataRepliesDataChildDataLayerKey in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex]["data"].keys() :
+                                                    if(checkKeyForDeletion(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex]["data"][deleteToDeleteChildDataRepliesDataChildDataLayerKey])):
+                                                        keysToDeleteChildDataRepliesDataChildDataLayer.append(deleteToDeleteChildDataRepliesDataChildDataLayerKey)
+                                            
+                                                for keyToDeleteChildDataRepliesDataChildDataLayer in keysToDeleteChildDataRepliesDataChildDataLayer:
+                                                    del resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"]["data"]["children"][replyChildrenIndex]["data"][keyToDeleteChildDataRepliesDataChildDataLayer]
+                    
 def checkKeyForDeletion(valueToCheck) :
     if valueToCheck == None:
         return True
@@ -270,7 +313,41 @@ def checkKeyForDeletion(valueToCheck) :
     if type(valueToCheck) == str and valueToCheck == "" :
         return True
     
+def collectKeys(redditResultsJson) :
+    global resultRedditJsonData
+    loadRedditDataJson(redditResultsJson)
+    allKeys = set()
+    
+    for entryKey in resultRedditJsonData.keys():
+        allKeys.update(collectKeysForEntry(entryKey))
+    return allKeys
 
+def collectKeysForEntry(redditEntryKey):
+    global resultRedditJsonData
+    resultKeys = set()
+    for i in range(0, len(resultRedditJsonData[redditEntryKey])) :
 
+        
+        resultKeys.update(resultRedditJsonData[redditEntryKey][i].keys())
+
+        if("data" in resultRedditJsonData[redditEntryKey][i].keys()) :
+            resultKeys.update(resultRedditJsonData[redditEntryKey][i]["data"].keys())
+
+            if "children" in resultRedditJsonData[redditEntryKey][i]["data"].keys():
+                #print("children exists")
+                for childrenIndex in range(0,len(resultRedditJsonData[redditEntryKey][i]["data"]["children"])):
+                    #print(len(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex].keys()))
+                    resultKeys.update(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex].keys())
+
+                    if "data" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex].keys() :
+                        #print(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys())
+                        resultKeys.update(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys())
+
+                        if "replies" in resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"].keys() :
+                            resultKeys.update(resultRedditJsonData[redditEntryKey][i]["data"]["children"][childrenIndex]["data"]["replies"].keys())
+                        
+    return resultKeys
+
+        
 
 
