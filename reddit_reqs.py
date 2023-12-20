@@ -50,7 +50,7 @@ def getRedditJsonRequestData(rawRedditUrl, redditJsonRequestUrl) :
     if(rawRedditUrl.strip() in resultRedditJsonData.keys()) :
         return None
     try:
-        time.sleep(.1)
+        time.sleep(5)
         response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
         if(response.status_code == 200) :
             print(rawRedditUrl.strip())
@@ -80,6 +80,7 @@ def createRedditDataJson(sourceRedditTextFile, jsonResultFileName) :
     global statuses
     # clear out before so that statuses is not added between method calls
     statuses = {}
+    print("Starting time - " + str(datetime.now()))
     
     loadRedditDataJson(jsonResultFileName)
     keysBefore = str(len(resultRedditJsonData.keys()))
@@ -99,6 +100,7 @@ def createRedditDataJson(sourceRedditTextFile, jsonResultFileName) :
     print("Keys After: " + str(len(resultRedditJsonData.keys())))
     print(statuses)
     updateRedditResponseJsonFile(jsonResultFileName)
+    print("Finishing time - " + str(datetime.now()))
     
 
 def printKeys(filename) :
@@ -350,4 +352,14 @@ def collectKeysForEntry(redditEntryKey):
 
         
 
+#print(grabCharsAt("result.json", 0 , 191096891, 300))
 
+createRedditDataJson("jojo.txt", "result_test.json")
+createRedditDataJson("jojo.txt", "result.json")
+deleteField("result.json")
+
+#print(grabRandomEntry("result.json",True))
+
+
+#parseRedditEntries("result.json","kind")
+#collectKeys("result.json")

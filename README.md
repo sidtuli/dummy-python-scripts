@@ -107,3 +107,17 @@ Used here (all over):
 global resultRedditJsonData
 global statuses
 ```
+
+[How to delete keys from dicts StackoverFlow link](https://stackoverflow.com/questions/64033039/how-to-delete-key-and-value-from-json)
+
+
+#### Misc links
+* [How to scrape data from Reddit using the Python Reddit API Wrapper(PRAW)](https://towardsdatascience.com/scraping-reddit-data-1c0af3040768)
+* [Retrieving all comments from a thread on Reddit](https://stackoverflow.com/questions/66178703/retrieving-all-comments-from-a-thread-on-reddit)
+* [Reddit API Docs](https://www.reddit.com/dev/api)
+* [Simple OAuth2 for Reddit API](https://www.reddit.com/r/redditdev/comments/dx0hbo/ill_admit_it_im_stupid_how_do_i_do_the_oauth2/)
+* [old oauth2 reddit api doc](https://github.com/reddit-archive/reddit/wiki/OAuth2)
+* [How to get author, title, data, and body of a post (self or link) or comment? (newbie)](https://www.reddit.com/r/redditdev/comments/i0ufug/how_to_get_author_title_data_and_body_of_a_post/)
+* [The Best Web Crawler for Scraping Reddit](https://medium.com/dataseries/the-best-web-crawler-for-scraping-reddit-c8db54c6b613)
+* []()
+
