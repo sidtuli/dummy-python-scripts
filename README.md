@@ -1,10 +1,11 @@
 # Dummy Python Scripts
 Collection of dumb little python scripts I play around with
 
-## reddit_reqs.py
+## reddit_collect_post_data_reqs.py
+
+A python script to collect data on a list of reddit posts and export it to json
 
 ### Citations
-
 
 https://stackoverflow.com/questions/66178703/retrieving-all-comments-from-a-thread-on-reddit
 
@@ -119,5 +120,50 @@ global statuses
 * [old oauth2 reddit api doc](https://github.com/reddit-archive/reddit/wiki/OAuth2)
 * [How to get author, title, data, and body of a post (self or link) or comment? (newbie)](https://www.reddit.com/r/redditdev/comments/i0ufug/how_to_get_author_title_data_and_body_of_a_post/)
 * [The Best Web Crawler for Scraping Reddit](https://medium.com/dataseries/the-best-web-crawler-for-scraping-reddit-c8db54c6b613)
-* []()
+* [Python sleep fot milliseconds](https://stackoverflow.com/questions/377454/how-do-i-get-my-program-to-sleep-for-50-milliseconds)
 
+## reddit_unsave_reqs.py
+
+A python script in order to unsave a list of reddit posts in bulk
+
+### Citations
+
+[Old OAuth2 Reddit GitHub wiki documentation](https://github.com/reddit-archive/reddit/wiki/OAuth2)
+
+[General Reddit API documentation](https://www.reddit.com/dev/api)
+
+[Reddit unsave api endpoint documentation](https://www.reddit.com/dev/api/#POST_api_unsave)
+
+[Example code on how to make an OAuth Token Request to Reddit](https://stackoverflow.com/questions/70884227/reddit-api-get-access-token)
+
+[Example code function on to get current time in milliseconds](https://stackoverflow.com/questions/5998245/how-do-i-get-the-current-time-in-milliseconds-in-python)
+
+[Manually raising (throwing) an exception in Python](https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python)
+
+[Example on how to send POST requests for personal reddit user data](https://www.reddit.com/r/redditdev/comments/sti7i8/post_data_headers_auth_and_get_headers_params_etc/)
+
+## extract_csv_column_to_text_list.py
+
+### Citations
+
+[Python CSV reader docs](https://docs.python.org/3/library/csv.html)
+
+[Python CSV dict reader docs](https://docs.python.org/3/library/csv.html#csv.DictReader)
+
+[StackOverflow article on write mode file open](https://stackoverflow.com/questions/2967194/open-in-python-does-not-create-a-file-if-it-doesnt-exist)
+
+[StackOverflow article on adding new lines when writing to a file](https://stackoverflow.com/questions/2918362/writing-string-to-a-file-on-a-new-line-every-time)
+
+## filter_text_file.py
+
+### Citations
+
+[Python regex example article](https://www.w3schools.com/python/python_regex.asp)
+[Python regex testinmg site](https://pythex.org/)
+[Python Regex Docs](https://docs.python.org/3/howto/regex.html)
+
+[StackOverflow article on checking new lines in string](https://stackoverflow.com/questions/5193811/how-can-i-check-for-a-new-line-in-string-in-python-3-x)
+
+[How to remove contents of a file](https://stackoverflow.com/questions/2769061/how-to-erase-the-file-contents-of-text-file-in-python)
+
+[Reviewing file open modes in Python](https://stackoverflow.com/questions/16208206/confused-by-python-file-mode-w)

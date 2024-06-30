@@ -50,7 +50,7 @@ def getRedditJsonRequestData(rawRedditUrl, redditJsonRequestUrl) :
     if(rawRedditUrl.strip() in resultRedditJsonData.keys()) :
         return None
     try:
-        time.sleep(5)
+        #time.sleep(.1)
         response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
         if(response.status_code == 200) :
             print(rawRedditUrl.strip())
@@ -350,16 +350,3 @@ def collectKeysForEntry(redditEntryKey):
                         
     return resultKeys
 
-        
-
-#print(grabCharsAt("result.json", 0 , 191096891, 300))
-
-createRedditDataJson("jojo.txt", "result_test.json")
-createRedditDataJson("jojo.txt", "result.json")
-deleteField("result.json")
-
-#print(grabRandomEntry("result.json",True))
-
-
-#parseRedditEntries("result.json","kind")
-#collectKeys("result.json")
