@@ -1,18 +1,17 @@
 import re
 
-def read_file(input_text_file):
+def process_file(input_text_file):
     lines = []
-    subreddit_dict = {}
-    with open(input_text_file) as input:
-        lines = input.readlines()
-    
-    for line in lines:
-        regex_match = re.match("https://www.reddit.com/r/([A-z0-9_]+)/comments/",line)
+    lines = read_file(input_text_file)
 
-        if regex_match == None:
-            continue
+    subreddit_dict = {}
+
+    for line in lines:
         
-        subreddit_name = regex_match.group(1)
+        subreddit_name = grab_subreddit_name(line)
+
+        if subreddit_name == None:
+            continue
 
         if subreddit_name in subreddit_dict:
             subreddit_dict[subreddit_name] = subreddit_dict[subreddit_name] + 1
@@ -21,4 +20,21 @@ def read_file(input_text_file):
     
     print(subreddit_dict)
 
-read_file("saved_post.txt")
+def read_file(input_text_file):
+    lines = []
+    try:
+        with open(input_text_file) as input:
+            lines = input.readlines()
+    except:
+        lines = None
+    
+    return lines
+    
+def grab_subreddit_name(link_line):
+    try:
+        regex_match = re.match("https://www.reddit.com/r/([A-z0-9_]+)/comments/", link_line)
+        return regex_match.group(1)
+    except:
+        return None
+
+process_file("saved_post.txt")
