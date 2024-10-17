@@ -24,8 +24,9 @@ def process_file(input_text_file, output_file=None):
     
     print(subreddit_dict)
 
-    with open(output_file, 'w+') as subreddit_json:
-        json.dump(subreddit_dict, subreddit_json)
+    if (output_file != None):
+        with open(output_file, 'w+') as subreddit_json:
+            json.dump(subreddit_dict, subreddit_json)
 
 
 def read_file(input_text_file):
