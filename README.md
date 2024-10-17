@@ -154,6 +154,8 @@ A python script in order to unsave a list of reddit posts in bulk
 
 [StackOverflow article on adding new lines when writing to a file](https://stackoverflow.com/questions/2918362/writing-string-to-a-file-on-a-new-line-every-time)
 
+[Useful article comparing string comparisons](https://note.nkmk.me/en/python-str-compare/)
+
 ## filter_text_file.py
 
 ### Citations
@@ -167,3 +169,13 @@ A python script in order to unsave a list of reddit posts in bulk
 [How to remove contents of a file](https://stackoverflow.com/questions/2769061/how-to-erase-the-file-contents-of-text-file-in-python)
 
 [Reviewing file open modes in Python](https://stackoverflow.com/questions/16208206/confused-by-python-file-mode-w)
+
+## reddit_filter_list.py
+
+### Citations
+
+[Checking time with arithmetic Python date time, under "Measuring Time Span with Timedelta Objects"](https://www.dataquest.io/blog/python-datetime-tutorial/)
+[Python comparing times](https://stackoverflow.com/questions/10048249/how-do-i-determine-if-current-time-is-within-a-specified-range-using-pythons-da)
+[Converting epoch ms to date time objects in Python](https://pythonguides.com/python-epoch-to-datetime/)
+[convert struct time to date time object](https://stackoverflow.com/questions/1697815/how-do-you-convert-a-time-struct-time-object-into-a-datetime-object)
+[date arithmetic in Python](https://stackoverflow.com/questions/38200581/subtract-a-month-from-a-date-in-python)

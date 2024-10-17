@@ -350,3 +350,14 @@ def collectKeysForEntry(redditEntryKey):
                         
     return resultKeys
 
+#print(grabCharsAt("result.json", 0 , 1, 300))
+
+createRedditDataJson("jojo.txt", "result_test.json")
+createRedditDataJson("jojo.txt", "result.json")
+deleteField("result.json")
+
+#print(grabRandomEntry("result.json",True))
+
+
+#parseRedditEntries("result.json","kind")
+#collectKeys("result.json")

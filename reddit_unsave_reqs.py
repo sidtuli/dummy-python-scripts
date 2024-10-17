@@ -46,7 +46,8 @@ def get_reddit_bearer_token() :
 
         token_request_data["expires_in"] = current_millisec_time() + token_request_data["expires_in"]
 
-        print(token_request_data)
+        #print(token_request_data)
+
         return token_request_data
         #print(current_millisec_time())
         #print(current_millisec_time() + token_request_data["expires_in"])
@@ -56,10 +57,14 @@ def get_reddit_bearer_token() :
 def unsave_post(reddit_post_fullname, token_data):
     headers = {"Authorization": "bearer " + token_data["access_token"], 'User-agent': 'Telexon Bot Requests'}
     response = requests.post("https://oauth.reddit.com/api/unsave", headers=headers, data={"id":reddit_post_fullname})
-    print(response.text)
+    #print(response.text)
+    #print(response)
 
 def get_reddit_post_fullname(reddit_link):
+    #print(reddit_link)
     regex_match = re.match("https://www.reddit.com/r/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
+    if (regex_match == None and "https://www.reddit.com/user" in reddit_link) :
+        regex_match = re.match("https://www.reddit.com/user/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
     return "t3_" + regex_match.group(1)
     
 '''
@@ -94,23 +99,28 @@ def remove_post_from_file(post_link, file_path):
 
         for post in posts:
             #print(post)
-            
-            if not (re.search(post_link,post)):
-                if('\n' in post):
-                    cleaning_file.write(post)
-                else:
-                    cleaning_file.write(post + "\n")
+            #print(post_link)
+            #print(post)
+            #print(re.search(post_link,post) or post_link in post)
+            if not (re.search(post_link,post) or post_link in post):
+                cleaning_file.write(post.rstrip() + '\n')
+                #if('\n' in post):
+                #    cleaning_file.write(post)
+                #else:
+                #    cleaning_file.write(post + "\n")
             else:
-                print(post)
+                print(post.rstrip())
 
-unsave_posts = grab_unsave_post_links("deleted_post.txt")
+unsave_posts = grab_unsave_post_links("filter_saved.txt")
 
 
 for post in unsave_posts :
     post_full_name = get_reddit_post_fullname(post)
+    #print(post_full_name)
     token_data = get_reddit_bearer_token()
     unsave_post(post_full_name, token_data)
-    remove_post_from_file(post, "deleted_post.txt")
+
+    remove_post_from_file(post, "filter_saved.txt")
     time.sleep(1)
     
     
