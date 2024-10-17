@@ -4,6 +4,19 @@ from requests.auth import HTTPBasicAuth
 import time
 import re
 
+def process_file(input_file):
+    unsave_posts = grab_unsave_post_links(input_file)
+
+
+    for post in unsave_posts :
+        post_full_name = get_reddit_post_fullname(post)
+        #print(post_full_name)
+        token_data = get_reddit_bearer_token()
+        unsave_post(post_full_name, token_data)
+
+        remove_post_from_file(post, input_file)
+        time.sleep(1)
+
 def get_client_creds_from_file(file_path) :
         try:
             with open(file_path) as f:
@@ -111,17 +124,7 @@ def remove_post_from_file(post_link, file_path):
             else:
                 print(post.rstrip())
 
-unsave_posts = grab_unsave_post_links("filter_saved.txt")
-
-
-for post in unsave_posts :
-    post_full_name = get_reddit_post_fullname(post)
-    #print(post_full_name)
-    token_data = get_reddit_bearer_token()
-    unsave_post(post_full_name, token_data)
-
-    remove_post_from_file(post, "filter_saved.txt")
-    time.sleep(1)
+process_file("filter_saved.txt")
     
     
     
