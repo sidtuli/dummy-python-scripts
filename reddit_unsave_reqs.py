@@ -40,7 +40,7 @@ def get_client_creds_from_file(file_path) :
 # Access token code stolen from here - https://stackoverflow.com/questions/70884227/reddit-api-get-access-token
 def get_reddit_bearer_token() :
     creds = get_client_creds_from_file("reddit_creds.json")
-    headers = {'User-agent': 'Telexon Bot Requests'}
+    headers = {'User-agent': 'Cool Bot Requests'}
     data = {
         'grant_type': 'password',
         'username': creds[2],
@@ -68,21 +68,30 @@ def get_reddit_bearer_token() :
         raise ValueError("Recieved an error in access token request, status code {request_status_code}".format(request_status_code=token_request.status_code))
 
 def unsave_post(reddit_post_fullname, token_data):
-    headers = {"Authorization": "bearer " + token_data["access_token"], 'User-agent': 'Telexon Bot Requests'}
+    headers = {"Authorization": "bearer " + token_data["access_token"], 'User-agent': 'Cool Bot Requests'}
     response = requests.post("https://oauth.reddit.com/api/unsave", headers=headers, data={"id":reddit_post_fullname})
     #print(response.text)
     #print(response)
 
 def get_reddit_post_fullname(reddit_link):
     #print(reddit_link)
-    regex_match = re.match("https://www.reddit.com/r/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
-    if (regex_match == None and "https://www.reddit.com/user" in reddit_link) :
-        regex_match = re.match("https://www.reddit.com/user/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
-    return "t3_" + regex_match.group(1)
+    
+    # Start with comment check 
+    regex_match = re.match("https://www.reddit.com/r/[A-z0-9_]+/comments/[A-z0-9]+/[A-z0-9]+/([A-z0-9]+)",reddit_link)
+    if (regex_match == None):
+        # Overall reddit post check
+        regex_match = re.match("https://www.reddit.com/r/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
+        
+        #Check if user post and not subreddit post
+        if (regex_match == None and "https://www.reddit.com/user" in reddit_link) :
+            regex_match = re.match("https://www.reddit.com/user/[A-z0-9_]+/comments/([A-z0-9]+)",reddit_link)
+        return "t3_" + regex_match.group(1)
+
+    return "t1_" + regex_match.group(1)
     
 '''
 def get_reddit_post_fullname(reddit_link):
-    reddit_json_request = requests.get(reddit_link+".json", headers = {'User-agent': 'Telexon Bot Requests'})
+    reddit_json_request = requests.get(reddit_link+".json", headers = {'User-agent': 'Cool Bot Requests'})
     reddit_json_object = json.loads(reddit_json_request.text)
     #print(reddit_json_object[0]["data"]["children"][0]['data']['name'])
     return reddit_json_object[0]["data"]["children"][0]['data']['name']
