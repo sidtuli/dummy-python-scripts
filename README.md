@@ -52,12 +52,12 @@ print("Keys After: " + str(len(resultRedditJsonData.keys())))
 [Solving getting 429s for reddit requests by adding a user agent](https://www.reddit.com/r/redditdev/comments/3qbll8/429_too_many_requests/)
 Used here:
 ```python
-response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
+response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Cool Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
 ```
 [Basic tutorial on request.get() method](https://www.w3schools.com/PYTHON/ref_requests_get.asp)
 Used here:
 ```python
-response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
+response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Cool Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
 ```
 [Python docs on urllib.parse method](https://docs.python.org/3/library/urllib.parse.html)
 Used here:

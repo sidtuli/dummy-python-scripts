@@ -39,7 +39,7 @@ def createRedditJsonRequestUrl(rawRedditUrl) :
 def getRedditJsonRequestData(redditJsonRequestUrl) :
     try:
         #time.sleep(.1)
-        response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Telexon Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
+        response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Cool Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
         if(response.status_code == 200) :
             #print(redditJsonRequestUrl.strip())
             return response
