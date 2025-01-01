@@ -161,7 +161,9 @@ A python script in order to unsave a list of reddit posts in bulk
 ### Citations
 
 [Python regex example article](https://www.w3schools.com/python/python_regex.asp)
+
 [Python regex testinmg site](https://pythex.org/)
+
 [Python Regex Docs](https://docs.python.org/3/howto/regex.html)
 
 [StackOverflow article on checking new lines in string](https://stackoverflow.com/questions/5193811/how-can-i-check-for-a-new-line-in-string-in-python-3-x)
@@ -175,7 +177,22 @@ A python script in order to unsave a list of reddit posts in bulk
 ### Citations
 
 [Checking time with arithmetic Python date time, under "Measuring Time Span with Timedelta Objects"](https://www.dataquest.io/blog/python-datetime-tutorial/)
+
 [Python comparing times](https://stackoverflow.com/questions/10048249/how-do-i-determine-if-current-time-is-within-a-specified-range-using-pythons-da)
+
 [Converting epoch ms to date time objects in Python](https://pythonguides.com/python-epoch-to-datetime/)
+
 [convert struct time to date time object](https://stackoverflow.com/questions/1697815/how-do-you-convert-a-time-struct-time-object-into-a-datetime-object)
+
 [date arithmetic in Python](https://stackoverflow.com/questions/38200581/subtract-a-month-from-a-date-in-python)
+
+
+## processAndUnsaveRedditSaveds.js
+
+Simple little JS script to run in browser to mass unsave stuff
+
+### Citations
+
+[How to do a for loop in JavaScript](https://stackoverflow.com/questions/9329446/loop-for-each-over-an-array-in-javascript)
+
+[borrowed sleep function](https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep)
