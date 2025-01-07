@@ -1,5 +1,4 @@
-
-async function processAndUnsaveRedditSaveds(checkNSFW = true, dateCheckText="", subredditCheckText="") {
+async function processAndUnsaveRedditSaveds(checkNSFW = true, dateCheckText="", subredditCheckText="", sleepTime=5000) {
 
     savedElts = document.getElementsByClassName("saved")
 
@@ -24,7 +23,7 @@ async function processAndUnsaveRedditSaveds(checkNSFW = true, dateCheckText="", 
     for (unsavePost of postsToUnsave) {
         textLink = processSavedElt(unsavePost)
         textLinks += textLink + "\n"
-        await sleep(5000);
+        await sleep(sleepTime);
     }
     console.log(textLinks)
 
