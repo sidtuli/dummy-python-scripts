@@ -50,7 +50,7 @@ def getRedditJsonRequestData(rawRedditUrl, redditJsonRequestUrl) :
     if(rawRedditUrl.strip() in resultRedditJsonData.keys()) :
         return None
     try:
-        #time.sleep(.1)
+        time.sleep(10)
         response = requests.get(redditJsonRequestUrl, headers = {'User-agent': 'Cool Bot Requests ' + datetime.now().strftime('%Y%m%d%H%M%S')})
         if(response.status_code == 200) :
             print(rawRedditUrl.strip())

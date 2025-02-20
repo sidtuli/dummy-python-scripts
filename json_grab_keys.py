@@ -1,6 +1,6 @@
 import json
 
-def readJson(jsonFileName, outFile):
+def grab_keys_from_json(jsonFileName, outFile):
     jsonData = {}
     with open(jsonFileName) as f :
         jsonData = json.load(f)
@@ -15,5 +15,3 @@ def readJson(jsonFileName, outFile):
             outputFile.write(line + "\n")
 
 
-
-readJson("result.json", "result_json_keys.txt")
