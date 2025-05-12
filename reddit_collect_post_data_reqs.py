@@ -72,7 +72,7 @@ def updateRedditResponseJsonFile(filename) :
     
     # Open file and dump dict into resulting json file
     with open(filename, 'w') as fp:
-        json.dump(resultRedditJsonData, fp)
+        json.dump(resultRedditJsonData, fp, indent=4)
     
 
 def createRedditDataJson(sourceRedditTextFile, jsonResultFileName) :
@@ -142,7 +142,7 @@ def grabRandomEntry(redditResultsJson, writeToFile) :
         if(writeToFile):
             with open("random" + datetime.now().strftime('%Y%m%d%H%M%S') + ".json", 'w') as fp:
                 jsontowrite = {randKey:resultRedditJsonData[randKey]}
-                json.dump(jsontowrite, fp)
+                json.dump(jsontowrite, fp, indent=4)
         return resultRedditJsonData[randKey]
 
 
@@ -350,11 +350,33 @@ def collectKeysForEntry(redditEntryKey):
                         
     return resultKeys
 
+# Stolen from here - https://github.com/arpitasapehia13/JSON-Cleaner-for-Large-Datasets/blob/main/clean_json.py
+def clean_json(file_path):
+    pre_clean_data = {}
+
+    with open(file_path, 'r') as pre_clean_data_file:
+        pre_clean_data = json.load(pre_clean_data_file)
+    
+    cleaned_data = remove_empty_fields(pre_clean_data)
+
+    with open(file_path, 'w') as cleaned_file:
+        json.dump(cleaned_data, cleaned_file, indent=4)
+
+
+def remove_empty_fields(item):
+    if isinstance(item, dict):
+        return {k: remove_empty_fields(v) for k, v in item.items() if v not in [None, "", []]}
+    elif isinstance(item, list):
+        return [remove_empty_fields(i) for i in item if i not in [None, "", []]]
+    else:
+        return item
+
 #print(grabCharsAt("result.json", 0 , 1, 300))
 
 createRedditDataJson("jojo.txt", "result_test.json")
 createRedditDataJson("jojo.txt", "result.json")
 deleteField("result.json")
+clean_json("result.json")
 
 #print(grabRandomEntry("result.json",True))
 

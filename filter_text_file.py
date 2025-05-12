@@ -73,8 +73,8 @@ def filterNonUniqueLines(textFile, outFile):
 search_term = ""
 #filter_text_to_out_file("jojo.txt", "filter_saved.txt", search_term)
 #filter_text_to_out_file("filter_saved.txt", "deleted_posts.txt", search_term)
-filter_text_to_out_file("saved_post.txt", "filter_saved.txt", search_term)
-remove_matching_lines("saved_post.txt", search_term)
+#filter_text_to_out_file("saved_post.txt", "filter_saved.txt", search_term)
+#remove_matching_lines("saved_post.txt", search_term)
 
-#filterNonUniqueLines("jojo.txt", "jojo_dups.json")
+filterNonUniqueLines("jojo.txt", "jojo_dups.json")
 

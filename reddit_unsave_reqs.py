@@ -7,7 +7,6 @@ import re
 def process_file(input_file):
     unsave_posts = grab_unsave_post_links(input_file)
 
-
     for post in unsave_posts :
         post_full_name = get_reddit_post_fullname(post)
         #print(post_full_name)

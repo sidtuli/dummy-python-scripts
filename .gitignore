@@ -1,4 +1,5 @@
 # ignore data files
 *.txt
-*json
+*.json
 *.csv
+*.html

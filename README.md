@@ -196,3 +196,8 @@ Simple little JS script to run in browser to mass unsave stuff
 [How to do a for loop in JavaScript](https://stackoverflow.com/questions/9329446/loop-for-each-over-an-array-in-javascript)
 
 [borrowed sleep function](https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep)
+
+## analyze_firefox_bookmarks.py
+
+[html.parser python documentation](https://docs.python.org/3/library/html.parser.html#html.parser.HTMLParser)
+[Example of python HTMLParser code](https://www.pythoncentral.io/html-parser/)
