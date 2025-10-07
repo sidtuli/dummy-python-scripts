@@ -14,7 +14,7 @@ def process_file(input_file):
         unsave_post(post_full_name, token_data)
 
         remove_post_from_file(post, input_file)
-        time.sleep(1)
+        time.sleep(5)
 
 def get_client_creds_from_file(file_path) :
         try:
@@ -45,7 +45,7 @@ def get_reddit_bearer_token() :
         'username': creds[2],
         'password': creds[3]
     }
-    token_request = requests.post("https://ssl.reddit.com/api/v1/access_token",
+    token_request = requests.post("https://www.reddit.com/api/v1/access_token",
                   data=data,
                   auth=HTTPBasicAuth(creds[0], creds[1]),
                   headers=headers)
@@ -132,7 +132,7 @@ def remove_post_from_file(post_link, file_path):
             else:
                 print(post.rstrip())
 
-process_file("filter_saved.txt")
+process_file("deleted_posts.txt")
     
     
     
