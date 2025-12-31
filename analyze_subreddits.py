@@ -46,4 +46,4 @@ def grab_subreddit_name(link_line):
     except:
         return None
 
-process_file("saved_post.txt","subreddits.json")
+process_file("jojo.txt","subreddits.json")

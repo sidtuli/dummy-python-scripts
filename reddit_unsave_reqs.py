@@ -14,7 +14,7 @@ def process_file(input_file):
         unsave_post(post_full_name, token_data)
 
         remove_post_from_file(post, input_file)
-        time.sleep(5)
+        time.sleep(10)
 
 def get_client_creds_from_file(file_path) :
         try:
@@ -133,6 +133,7 @@ def remove_post_from_file(post_link, file_path):
                 print(post.rstrip())
 
 process_file("deleted_posts.txt")
+#process_file("filter_saved.txt")
     
     
     

@@ -1,6 +1,20 @@
 import re
 import json
 
+def remove_term_from_file(input_file, output_file, term_to_remove):
+    input_lines = []
+    with open(input_file) as input:
+        input_lines = input.readlines()
+    
+    if output_file is None:
+        output_file = input_file
+    
+    with open(output_file, 'r+') as output:
+        for line in input_lines:
+            if(re.search(term_to_remove, line)):
+                output.write(line.rstrip().replace(term_to_remove, "") + '\n')
+
+
 def filter_text_to_out_file(input_text_file, output_text_file, regex_phrase):
     with open(input_text_file) as input:
         lines = input.readlines()
@@ -43,11 +57,11 @@ def flag_non_unique_lines(textLines):
             linesDict[line] = 1
     # lineKeys = []
     # for key in linesDict:
-    #     lineKeys.append(key)
+    #    lineKeys.append(key)
 
     # for lineKey in lineKeys:
-    #     if linesDict[lineKey] <= 1:
-    #         del linesDict[lineKey]
+    #    if linesDict[lineKey] <= 1:
+    #        del linesDict[lineKey]
     #     else:
     #         print(lineKey)
     
@@ -70,11 +84,11 @@ def filterNonUniqueLines(textFile, outFile):
 
 
 
-search_term = ""
+search_term = "gaming"
 #filter_text_to_out_file("jojo.txt", "filter_saved.txt", search_term)
-#filter_text_to_out_file("filter_saved.txt", "deleted_posts.txt", search_term)
-#filter_text_to_out_file("saved_post.txt", "filter_saved.txt", search_term)
-#remove_matching_lines("saved_post.txt", search_term)
+#filter_text_to_out_file("saved_post.txt", "deleted_posts.txt", search_term)
+filter_text_to_out_file("saved_post.txt", "filter_saved.txt", search_term)
+remove_matching_lines("saved_post.txt", search_term)
 
 filterNonUniqueLines("jojo.txt", "jojo_dups.json")
 
