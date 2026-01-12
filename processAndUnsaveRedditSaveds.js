@@ -1,11 +1,11 @@
-async function processAndUnsaveRedditSaveds(checkNSFW = true, dateCheckText="", subredditCheckText="", sleepTime=5000) {
+async function processAndUnsaveRedditSaveds(checkNSFW = null, dateCheckText = "", subredditCheckText = "", sleepTime = 60000) {
 
     savedElts = document.getElementsByClassName("saved")
 
     postsToUnsave = []
 
     for(element of savedElts) {
-        nsfwCheck = (checkNSFW && element.getAttribute("data-nsfw") == "true") || (!checkNSFW && element.getAttribute("data-nsfw") == "false")
+        nsfwCheck = makeNSFWCheck(checkNSFW, element)
 
         dateText = element.querySelector("time").innerText
         dateCheck = dateText.includes(dateCheckText)
@@ -19,14 +19,25 @@ async function processAndUnsaveRedditSaveds(checkNSFW = true, dateCheckText="", 
     }
     
     textLinks = ""
+    console.log("%d posts to process\nEstimated finish time: %s", 
+        postsToUnsave.length,
+        calculateEstimateFinishTime(postsToUnsave.length, sleepTime)
+    )
     
-    for (unsavePost of postsToUnsave) {
+    for (let i = 0; i < postsToUnsave.length; i++) {
+        unsavePost = postsToUnsave[i]
         textLink = processSavedElt(unsavePost)
         textLinks += textLink + "\n"
-        await sleep(sleepTime);
+        if (i + 1 < postsToUnsave.length) {
+            await sleep(sleepTime);
+        }
     }
-    console.log(textLinks)
 
+    console.log("Processing done, finish time %s", 
+        new Date().toString()
+    )
+
+    console.log(textLinks)
 }
 
 function processSavedElt(elt) {
@@ -50,4 +61,20 @@ function clickUnsaveButton(elt) {
 // sleep function from here - https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function calculateEstimateFinishTime(unsavePostCount, sleepGap) {
+    currentTime = Date.now();
+    return new Date(currentTime + (unsavePostCount * sleepGap) - sleepGap).toString()
+}
+
+function makeNSFWCheck(checkNSFW, postElement) {
+    if (checkNSFW == null) {
+        return true;
+    }
+    if (checkNSFW) {
+        return postElement.getAttribute("data-nsfw") == "true";
+    } else {
+        postElement.getAttribute("data-nsfw") == "false"
+    }
 }
