@@ -19,10 +19,15 @@ async function processAndUnsaveRedditSaveds(checkNSFW = null, dateCheckText = ""
     }
     
     textLinks = ""
-    console.log("%d posts to process\nEstimated finish time: %s", 
-        postsToUnsave.length,
-        calculateEstimateFinishTime(postsToUnsave.length, sleepTime)
-    )
+
+    if (!(postsToUnsave.length > 0)) {
+        console.log("No elements to process")
+        return;
+    }
+
+    console.log("%d posts to process", postsToUnsave.length)
+    console.log("Estimated finish time: %s", calculateEstimateFinishTime(postsToUnsave.length, sleepTime))
+
     
     for (let i = 0; i < postsToUnsave.length; i++) {
         unsavePost = postsToUnsave[i]
@@ -33,9 +38,7 @@ async function processAndUnsaveRedditSaveds(checkNSFW = null, dateCheckText = ""
         }
     }
 
-    console.log("Processing done, finish time %s", 
-        new Date().toString()
-    )
+    console.log("Processing done: finish time %s", new Date().toString())
 
     console.log(textLinks)
 }
